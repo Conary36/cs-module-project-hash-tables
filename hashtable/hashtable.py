@@ -38,9 +38,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
-
-        return len(self)
+        length = len(self.buckets)
+        return self.get_num_slots(self) % length
 
 
     def get_load_factor(self):
