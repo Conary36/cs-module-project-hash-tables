@@ -22,6 +22,9 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
+        self.capacity = capacity
+        self.size = 0
+        self.buckets = [None] * self.capacity
 
 
     def get_num_slots(self):
@@ -35,6 +38,9 @@ class HashTable:
         Implement this.
         """
         # Your code here
+
+
+        return len(self)
 
 
     def get_load_factor(self):
@@ -52,6 +58,18 @@ class HashTable:
 
         Implement this, and/or DJB2.
         """
+    #     algorithm
+    #     fnv - 1 is
+    #     hash := FNV_offset_basis
+    #
+    #     for each byte_of_data to be hashed do
+    #     hash := hash × FNV_prime
+    #     hash := hash
+    #     XOR
+    #     byte_of_data
+    #
+    # return hash
+
 
         # Your code here
 
@@ -63,9 +81,24 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
+        # unsigned
+        # long
+        # hash(unsigned
+        # char * str)
+        # {
+        #     unsigned
+        # long
+        # hash = 5381;
+        # int
+        # c;
+        #
+        # while (c = * str++)
+        #     hash = ((hash << 5) + hash) + c; / *hash * 33 + c * /
+        #
+        # return hash;
+        # }
 
-
-    def hash_index(self, key):
+        def hash_index(self, key):
         """
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
