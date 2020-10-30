@@ -2,6 +2,7 @@ class HashTableEntry:
     """
     Linked List hash table key/value pair
     """
+
     def __init__(self, key, value):
         self.key = key
         self.value = value
@@ -22,10 +23,9 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
-        self.capacity = capacity
-        self.size = 0
+        self.capacity = max(capacity, MIN_CAPACITY)
         self.buckets = [None] * self.capacity
-
+        self.load = 0
 
     def get_num_slots(self):
         """
@@ -41,7 +41,6 @@ class HashTable:
         length = len(self.buckets)
         return length
 
-
     def get_load_factor(self):
         """
         Return the load factor for this hash table.
@@ -50,16 +49,16 @@ class HashTable:
         """
         # Your code here
 
+        size = 0
         # Count how many indexes in our array
         # that is populated with values.
         for item in self.buckets:
             if item is not None:
-                self.size += 1
+                size += 1
         # Return bool value based on if the
         # amount of populated items are more
         # than half the length of the list.
-        return self.size > len(self.buckets) / 2
-
+        return len(self.buckets) / size
 
     def fnv1(self, key):
         """
@@ -73,15 +72,11 @@ class HashTable:
         offset_basis = 14695981039346656037
 
         # FNV-1 Hash Function
-        hash = offset_basis + self.key
-        for char in self:
+        hash = offset_basis + key
+        for char in key:
             hash = hash * FNV_prime
             hash = hash ^ ord(char)
         return hash
-
-
-
-
 
     def djb2(self, key):
         """
@@ -90,29 +85,17 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
-        # unsigned
-        # long
-        # hash(unsigned
-        # char * str)
-        # {
-        #     unsigned
-        # long
-        # hash = 5381;
-        # int
-        # c;
-        #
-        # while (c = * str++)
-        #     hash = ((hash << 5) + hash) + c; / *hash * 33 + c * /
-        #
-        # return hash;
-        # }
+        hash = 5381
+        for x in key:
+            hash = ((hash << 5) + hash) + ord(x)
+        return hash & 0xFFFFFFFF
 
     def hash_index(self, key):
         """
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
+        # return self.fnv1(key) % self.capacity
         return self.djb2(key) % self.capacity
 
     def put(self, key, value):
@@ -124,7 +107,14 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        idx = self.hash_index(key)
 
+        if self.buckets[idx] != None:
+            print('warning! collision!')
+
+        self.buckets[idx] = value
+
+        self.load += 1
 
     def delete(self, key):
         """
@@ -135,7 +125,14 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        idx = self.hash_index(key)
 
+        if self.buckets[idx] == None:
+            print('Warning! no key!!')
+
+        else:
+            self.buckets[idx] = None
+            self.load -= 1
 
     def get(self, key):
         """
@@ -147,7 +144,6 @@ class HashTable:
         """
         # Your code here
 
-
     def resize(self, new_capacity):
         """
         Changes the capacity of the hash table and
@@ -156,7 +152,6 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
 
 
 if __name__ == "__main__":
