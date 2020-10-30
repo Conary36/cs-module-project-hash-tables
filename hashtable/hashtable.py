@@ -39,7 +39,7 @@ class HashTable:
         """
         # Your code here
         length = len(self.buckets)
-        return self.get_num_slots(self) % length
+        return length
 
 
     def get_load_factor(self):
@@ -50,6 +50,16 @@ class HashTable:
         """
         # Your code here
 
+        # Count how many indexes in our array
+        # that is populated with values.
+        for item in self.buckets:
+            if item is not None:
+                self.size += 1
+        # Return bool value based on if the
+        # amount of populated items are more
+        # than half the length of the list.
+        return self.size > len(self.buckets) / 2
+
 
     def fnv1(self, key):
         """
@@ -57,20 +67,20 @@ class HashTable:
 
         Implement this, and/or DJB2.
         """
-    #     algorithm
-    #     fnv - 1 is
-    #     hash := FNV_offset_basis
-    #
-    #     for each byte_of_data to be hashed do
-    #     hash := hash × FNV_prime
-    #     hash := hash
-    #     XOR
-    #     byte_of_data
-    #
-    # return hash
-
-
         # Your code here
+        # Constants
+        FNV_prime = 1099511628211
+        offset_basis = 14695981039346656037
+
+        # FNV-1 Hash Function
+        hash = offset_basis + self.key
+        for char in self:
+            hash = hash * FNV_prime
+            hash = hash ^ ord(char)
+        return hash
+
+
+
 
 
     def djb2(self, key):
@@ -97,7 +107,7 @@ class HashTable:
         # return hash;
         # }
 
-        def hash_index(self, key):
+    def hash_index(self, key):
         """
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
