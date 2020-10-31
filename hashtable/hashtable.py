@@ -138,15 +138,13 @@ class HashTable:
         """
         # Your code here
 
-        self.load -= 1
-        self.put(key, None)
         # idx = self.hash_index(key)
-        #
-        # if self.buckets[idx] is None:
-        #     print('Warning! no key!!')
-        # else:
-        #     self.buckets[idx] = None
-        #     self.load -= 1
+        if self.buckets[idx] is None:
+            print('Warning! no key!!')
+        else:
+
+            self.load -= 1
+            self.put(key, None)
 
     def get(self, key):
         """
