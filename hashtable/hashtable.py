@@ -58,7 +58,7 @@ class HashTable:
         # Return bool value based on if the
         # amount of populated items are more
         # than half the length of the list.
-        return len(self.buckets) / size
+        return size / len(self.buckets)
 
     def fnv1(self, key):
         """
@@ -107,14 +107,26 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        idx = self.hash_index(key)
-
-        if self.buckets[idx] != None:
-            print('warning! collision!')
-
-        self.buckets[idx] = value
-
+        index = self.hash_index(key)
+        node = HashTableEntry(key, value)
+        key = self.buckets[index]
         self.load += 1
+        if key:
+            self.buckets[index] = node
+            self.buckets[index].next = key
+        else:
+            self.buckets[index] = node
+        return self.buckets[index]
+
+        # new_node = HashTableEntry(key, value)
+        # idx = self.hash_index(key)
+        #
+        # if self.buckets[idx] is not None:
+        #     self.buckets[idx] = new_node
+        #     print('warning! collision!')
+        # self.buckets[idx] = value
+        # self.load += 1
+        # return self.buckets[idx]
 
     def delete(self, key):
         """
@@ -125,14 +137,16 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        idx = self.hash_index(key)
 
-        if self.buckets[idx] == None:
-            print('Warning! no key!!')
-
-        else:
-            self.buckets[idx] = None
-            self.load -= 1
+        self.load -= 1
+        self.put(key, None)
+        # idx = self.hash_index(key)
+        #
+        # if self.buckets[idx] is None:
+        #     print('Warning! no key!!')
+        # else:
+        #     self.buckets[idx] = None
+        #     self.load -= 1
 
     def get(self, key):
         """
@@ -144,6 +158,28 @@ class HashTable:
         """
         # Your code here
 
+        index = self.hash_index(key)
+        node = self.buckets[index]
+        while node:
+            if node.key == key:
+                return node.value
+            node = node.next
+
+        # idx = self.hash_index(key)
+        # if self.buckets[idx] is None:
+        #     raise KeyError()
+        # else:
+        #     # Loop through all key-value-pairs
+        #     # and find if our key exist. If it does
+        #     # then return its value.
+        #     for kvp in self.buckets[idx]:
+        #         if kvp[0] == key:
+        #             return kvp[1]
+        #
+        #     # If no return was done during loop,
+        #     # it means key didn't exist.
+        #     raise KeyError()
+
     def resize(self, new_capacity):
         """
         Changes the capacity of the hash table and
@@ -152,6 +188,15 @@ class HashTable:
         Implement this.
         """
         # Your code here
+
+        new_size = 2 * self.capacity
+        for i in range(self.capacity * 2):
+            new_capacity.append(None)
+        for i in range(self.capacity):
+            if self.buckets[i] != None:
+                self.put(self.buckets[i][0], self.buckets[i][1], new_capacity, new_size, True)
+        self.buckets = new_capacity
+        self.capacity = new_size
 
 
 if __name__ == "__main__":
