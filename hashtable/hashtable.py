@@ -107,16 +107,16 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        index = self.hash_index(key)
+        idx = self.hash_index(key)
         node = HashTableEntry(key, value)
-        key = self.buckets[index]
+        key = self.buckets[idx]
         self.load += 1
         if key:
-            self.buckets[index] = node
-            self.buckets[index].next = key
+            self.buckets[idx] = node
+            self.buckets[idx].next = key
         else:
-            self.buckets[index] = node
-        return self.buckets[index]
+            self.buckets[idx] = node
+        return self.buckets[idx]
 
         # new_node = HashTableEntry(key, value)
         # idx = self.hash_index(key)
