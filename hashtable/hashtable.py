@@ -2,12 +2,10 @@ class HashTableEntry:
     """
     Linked List hash table key/value pair
     """
-
     def __init__(self, key, value):
         self.key = key
         self.value = value
         self.next = None
-
 
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
@@ -138,7 +136,7 @@ class HashTable:
         """
         # Your code here
 
-        # idx = self.hash_index(key)
+        idx = self.hash_index(key)
         if self.buckets[idx] is None:
             print('Warning! no key!!')
         else:
@@ -186,15 +184,18 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        newH = HashTable(new_capacity)
 
-        new_size = 2 * self.capacity
-        for i in range(self.capacity * 2):
-            new_capacity.append(None)
         for i in range(self.capacity):
             if self.buckets[i] is not None:
-                self.put(self.buckets[i][0], self.buckets[i][1], new_capacity, new_size, True)
-        self.buckets = new_capacity
-        self.capacity = new_size
+                entry = self.buckets[i]
+                while entry:
+                    newH.put(entry.key, entry.value)
+                    entry = entry.next
+
+        self.buckets = newH.buckets
+        self.capacity = new_capacity
+        self.load = newH.load
 
 
 if __name__ == "__main__":
