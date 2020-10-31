@@ -158,8 +158,8 @@ class HashTable:
         """
         # Your code here
 
-        index = self.hash_index(key)
-        node = self.buckets[index]
+        idx = self.hash_index(key)
+        node = self.buckets[idx]
         while node:
             if node.key == key:
                 return node.value
@@ -193,7 +193,7 @@ class HashTable:
         for i in range(self.capacity * 2):
             new_capacity.append(None)
         for i in range(self.capacity):
-            if self.buckets[i] != None:
+            if self.buckets[i] is not None:
                 self.put(self.buckets[i][0], self.buckets[i][1], new_capacity, new_size, True)
         self.buckets = new_capacity
         self.capacity = new_size
