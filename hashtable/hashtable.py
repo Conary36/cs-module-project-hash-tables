@@ -2,10 +2,12 @@ class HashTableEntry:
     """
     Linked List hash table key/value pair
     """
+
     def __init__(self, key, value):
         self.key = key
         self.value = value
         self.next = None
+
 
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
@@ -116,16 +118,6 @@ class HashTable:
             self.buckets[idx] = node
         return self.buckets[idx]
 
-        # new_node = HashTableEntry(key, value)
-        # idx = self.hash_index(key)
-        #
-        # if self.buckets[idx] is not None:
-        #     self.buckets[idx] = new_node
-        #     print('warning! collision!')
-        # self.buckets[idx] = value
-        # self.load += 1
-        # return self.buckets[idx]
-
     def delete(self, key):
         """
         Remove the value stored with the given key.
@@ -160,21 +152,6 @@ class HashTable:
             if node.key == key:
                 return node.value
             node = node.next
-
-        # idx = self.hash_index(key)
-        # if self.buckets[idx] is None:
-        #     raise KeyError()
-        # else:
-        #     # Loop through all key-value-pairs
-        #     # and find if our key exist. If it does
-        #     # then return its value.
-        #     for kvp in self.buckets[idx]:
-        #         if kvp[0] == key:
-        #             return kvp[1]
-        #
-        #     # If no return was done during loop,
-        #     # it means key didn't exist.
-        #     raise KeyError()
 
     def resize(self, new_capacity):
         """
