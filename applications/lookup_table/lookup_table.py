@@ -6,6 +6,8 @@ import random
 Slowfun_too_slow is an example of what NOT TO DO.
 TAKES FOREVER TO RUN
 """
+
+
 def slowfun_too_slow(x, y):
     v = math.pow(x, y)
     v = math.factorial(v)
@@ -34,6 +36,10 @@ def slowfun(x, y):
 
 # Do not modify below this line!
 
+"""
+THIS RUNS FIRST---> CALLING SLOW FUN METHOD
+
+"""
 for i in range(500):
     x = random.randrange(2, 14)
     y = random.randrange(3, 6)
