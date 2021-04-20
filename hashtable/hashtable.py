@@ -46,6 +46,7 @@ class HashTable:
         Return the load factor for this hash table.
 
         Implement this.
+        --------THIS IS AN ALTERNATE AND SIMPLER METHOD: return self.load / self.capacity
         """
         # Your code here
 

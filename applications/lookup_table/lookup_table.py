@@ -2,7 +2,10 @@
 import math
 import random
 
-
+"""as 
+Slowfun_too_slow is an example of what NOT TO DO.
+TAKES FOREVER TO RUN
+"""
 def slowfun_too_slow(x, y):
     v = math.pow(x, y)
     v = math.factorial(v)
