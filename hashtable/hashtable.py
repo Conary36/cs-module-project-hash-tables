@@ -2,6 +2,7 @@ class HashTableEntry:
     """
     Linked List hash table key/value pair
     """
+
     def __init__(self, key, value):
         self.key = key
         self.value = value
@@ -22,7 +23,9 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
-
+        self.capacity = max(capacity, MIN_CAPACITY)
+        self.buckets = [None] * self.capacity
+        self.load = 0
 
     def get_num_slots(self):
         """
@@ -35,16 +38,28 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        length = len(self.buckets)
+        return length
 
     def get_load_factor(self):
         """
         Return the load factor for this hash table.
 
         Implement this.
+        --------THIS IS AN ALTERNATE AND SIMPLER METHOD: return self.load / self.capacity
         """
         # Your code here
 
+        size = 0
+        # Count how many indexes in our array
+        # that is populated with values.
+        for item in self.buckets:
+            if item is not None:
+                size += 1
+        # Return bool value based on if the
+        # amount of populated items are more
+        # than half the length of the list.
+        return size / len(self.buckets)
 
     def fnv1(self, key):
         """
@@ -52,9 +67,17 @@ class HashTable:
 
         Implement this, and/or DJB2.
         """
-
         # Your code here
+        # Constants
+        FNV_prime = 1099511628211
+        offset_basis = 14695981039346656037
 
+        # FNV-1 Hash Function
+        hash = offset_basis + key
+        for char in key:
+            hash = hash * FNV_prime
+            hash = hash ^ ord(char)
+        return hash
 
     def djb2(self, key):
         """
@@ -63,14 +86,17 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
-
+        hash = 5381
+        for x in key:
+            hash = ((hash << 5) + hash) + ord(x)
+        return hash & 0xFFFFFFFF
 
     def hash_index(self, key):
         """
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
+        # return self.fnv1(key) % self.capacity
         return self.djb2(key) % self.capacity
 
     def put(self, key, value):
@@ -82,7 +108,16 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        idx = self.hash_index(key)
+        node = HashTableEntry(key, value)
+        key = self.buckets[idx]
+        self.load += 1
+        if key:
+            self.buckets[idx] = node
+            self.buckets[idx].next = key
+        else:
+            self.buckets[idx] = node
+        return self.buckets[idx]
 
     def delete(self, key):
         """
@@ -94,6 +129,13 @@ class HashTable:
         """
         # Your code here
 
+        idx = self.hash_index(key)
+        if self.buckets[idx] is None:
+            print('Warning! no key!!')
+        else:
+
+            self.load -= 1
+            self.put(key, None)
 
     def get(self, key):
         """
@@ -105,6 +147,12 @@ class HashTable:
         """
         # Your code here
 
+        idx = self.hash_index(key)
+        node = self.buckets[idx]
+        while node:
+            if node.key == key:
+                return node.value
+            node = node.next
 
     def resize(self, new_capacity):
         """
@@ -114,7 +162,18 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        newH = HashTable(new_capacity)
 
+        for i in range(self.capacity):
+            if self.buckets[i] is not None:
+                entry = self.buckets[i]
+                while entry:
+                    newH.put(entry.key, entry.value)
+                    entry = entry.next
+
+        self.buckets = newH.buckets
+        self.capacity = new_capacity
+        self.load = newH.load
 
 
 if __name__ == "__main__":

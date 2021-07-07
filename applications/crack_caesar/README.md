@@ -27,7 +27,7 @@ So if you have plaintext like `HELLO, WORLD!`, use the above table and
 
 To decode, just do the reverse, `D` becomes `H`, etc.
 
-But what if you evesdrop on some ciphertext, but don't know the key (the
+But what if you eavesdrop on some ciphertext, but don't know the key (the
 mapping). How can you decode it?
 
 ## Frequency Analysis
@@ -99,3 +99,4 @@ lowercase letters.)
 
 No tests are provided for this one, but the result should be readable,
 with at most a handful of incorrect letters.
+

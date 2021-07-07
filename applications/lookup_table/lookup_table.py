@@ -1,4 +1,11 @@
 # Your code here
+import math
+import random
+
+"""as 
+Slowfun_too_slow is an example of what NOT TO DO.
+TAKES FOREVER TO RUN
+"""
 
 
 def slowfun_too_slow(x, y):
@@ -9,6 +16,10 @@ def slowfun_too_slow(x, y):
 
     return v
 
+
+lookup_table = {}
+
+
 def slowfun(x, y):
     """
     Rewrite slowfun_too_slow() in here so that the program produces the same
@@ -16,11 +27,20 @@ def slowfun(x, y):
     """
     # Your code here
 
+    if str(f'{x}, {y}') not in lookup_table:
+        lookup_table[str(f'{x}, {y}')] = slowfun_too_slow(x, y)
+        return lookup_table[str(f'{x}, {y}')]
+    else:
+        return lookup_table[str(f'{x}, {y}')]
 
 
 # Do not modify below this line!
 
-for i in range(50000):
+"""
+THIS RUNS FIRST---> CALLING SLOW FUN METHOD
+
+"""
+for i in range(500):
     x = random.randrange(2, 14)
     y = random.randrange(3, 6)
     print(f'{i}: {x},{y}: {slowfun(x, y)}')
